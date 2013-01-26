@@ -1,0 +1,35 @@
+        {% extends 'base.html' %}
+
+        {% block header %}
+        <h1>Chicago Police Stations</h1>
+        {% endblock %}
+
+        {% block mapscript %}
+        <script type="text/javascript">
+            var infowindow = null;
+
+            function initialize() {
+                var mapOptions = {
+                    center: new google.maps.LatLng(41.87886, -87.635837), zoom: 10, mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+                {% for station in stats %}
+                placemarker(new google.maps.LatLng({{ station.lat }}, {{ station.lng }}), map, "<h3><a href='{{ station.url }}'>{{ station.address }}</a></h3>{{ station.phone }}" ); 
+                {% endfor %}
+            }
+
+            function placemarker(location, map, address) {
+                    marker = new google.maps.Marker({ position: location, map: map }); 
+                    google.maps.event.addListener(marker, 'click', function() { 
+                        if(infowindow){ infowindow.close(); }
+                        infowindow = new google.maps.InfoWindow({ content: address, size: new google.maps.Size(50,50) }); 
+                        infowindow.open(map, this); 
+                    });
+            }
+        </script>
+        {% endblock %}
+
+        {% block footer %}
+        <p>Created by <a href="http://duanehilton.com">Duane Hilton</a></p>
+        {% endblock %}
