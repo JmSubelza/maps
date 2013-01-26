@@ -1,5 +1,9 @@
         {% extends 'base.html' %}
 
+        {% block header %}
+        <h1>Chicago Public Library Locations</h1>
+        {% endblock %}
+
         {% block mapscript %}
         <script type="text/javascript">
             var infowindow = null;
@@ -11,7 +15,7 @@
                 var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
                 {% for library in libs %}
-                placemarker(new google.maps.LatLng({{ library.lat }}, {{ library.lng }}), map, "{{ library.address }} <br> Testing" ); 
+                placemarker(new google.maps.LatLng({{ library.lat }}, {{ library.lng }}), map, "<h3><a href='{{ library.url }}'>{{ library.location }}</a></h3><br />{{ library.address }}<br>{{ library.phone }}<br>{{ library.hours }}" ); 
                 {% endfor %}
             }
 
@@ -27,5 +31,5 @@
         {% endblock %}
 
         {% block footer %}
-        <p>Libraries in the Chicago area.</p>
+        <p>Created by <a href="http://duanehilton.com">Duane Hilton</a></p>
         {% endblock %}
