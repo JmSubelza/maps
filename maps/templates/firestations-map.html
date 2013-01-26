@@ -1,7 +1,7 @@
         {% extends 'base.html' %}
 
         {% block header %}
-        <h1>Chicago Public Library Locations</h1>
+        <h1>Chicago Fire Stations</h1>
         {% endblock %}
 
         {% block mapscript %}
@@ -14,8 +14,8 @@
                 };
                 var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-                {% for library in libs %}
-                placemarker(new google.maps.LatLng({{ library.lat }}, {{ library.lng }}), map, "<h3><a href='{{ library.url }}'>{{ library.location }}</a></h3><br />{{ library.address }}<br>{{ library.phone }}<br>{{ library.hours }}" ); 
+                {% for station in stats %}
+                placemarker(new google.maps.LatLng({{ station.lat }}, {{ station.lng }}), map, "{{ station.address }}" ); 
                 {% endfor %}
             }
 
