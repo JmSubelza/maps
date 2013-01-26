@@ -1,0 +1,31 @@
+        {% extends 'base.html' %}
+
+        {% block mapscript %}
+        <script type="text/javascript">
+            var infowindow = null;
+
+            function initialize() {
+                var mapOptions = {
+                    center: new google.maps.LatLng(41.87886, -87.635837), zoom: 10, mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+                {% for library in libs %}
+                placemarker(new google.maps.LatLng({{ library.lat }}, {{ library.lng }}), map, "{{ library.address }} <br> Testing" ); 
+                {% endfor %}
+            }
+
+            function placemarker(location, map, address) {
+                    marker = new google.maps.Marker({ position: location, map: map }); 
+                    google.maps.event.addListener(marker, 'click', function() { 
+                        if(infowindow){ infowindow.close(); }
+                        infowindow = new google.maps.InfoWindow({ content: address, size: new google.maps.Size(50,50) }); 
+                        infowindow.open(map, this); 
+                    });
+            }
+        </script>
+        {% endblock %}
+
+        {% block footer %}
+        <p>Libraries in the Chicago area.</p>
+        {% endblock %}
