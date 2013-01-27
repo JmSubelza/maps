@@ -15,7 +15,7 @@
                 var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
                 {% for library in libs %}
-                placemarker(new google.maps.LatLng({{ library.lat }}, {{ library.lng }}), map, "<h3><a href='{{ library.url }}'>{{ library.location }}</a></h3><br />{{ library.address }}<br>{{ library.phone }}<br>{{ library.hours }}" ); 
+                placemarker(new google.maps.LatLng({{ library.lat }}, {{ library.lng }}), map, "<h3><a href='{{ library.url }}'>{{ library.location }}</a></h3><br />{{ library.address }}<br>{{ library.phone }}<br>{{ library.hours|safe }}" ); 
                 {% endfor %}
             }
 
