@@ -7,6 +7,7 @@
         {% block mapscript %}
         <script type="text/javascript">
             var infowindow = null;
+            var image = 'http://icons.iconarchive.com/icons/matthew-kelleigh/miscellaneous/32/Fire-Hydrant-icon.png'
 
             function initialize() {
                 var mapOptions = {
@@ -20,7 +21,7 @@
             }
 
             function placemarker(location, map, address) {
-                    marker = new google.maps.Marker({ position: location, map: map }); 
+                    marker = new google.maps.Marker({ position: location, map: map, icon: image }); 
                     google.maps.event.addListener(marker, 'click', function() { 
                         if(infowindow){ infowindow.close(); }
                         infowindow = new google.maps.InfoWindow({ content: address, size: new google.maps.Size(50,50) }); 

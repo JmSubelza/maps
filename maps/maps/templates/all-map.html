@@ -1,0 +1,64 @@
+        {% extends 'base.html' %}
+        {% block title %}Chicago Public Libraries, Chicago Police Stations, Chicago Fire Stations map{% endblock %}
+        {% block header %}
+        <h1>Chicago Public Libraries, Chicago Police Stations, Chicago Fire Stations map</h1>
+        {% endblock %}
+
+        {% block mapscript %}
+        <script type="text/javascript">
+            var infowindow = null;
+            var limage = 'http://icons.iconarchive.com/icons/simiographics/mixed/32/Book-icon.png'
+            var pimage = 'http://icons.iconarchive.com/icons/aha-soft/standard-transport/32/police-car-icon.png'
+            var fimage = 'http://icons.iconarchive.com/icons/matthew-kelleigh/miscellaneous/32/Fire-Hydrant-icon.png'
+
+            function initialize() {
+                var mapOptions = {
+                    center: new google.maps.LatLng(41.87886, -87.635837), zoom: 10, mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+                {% for library in libs %}
+                lplacemarker(new google.maps.LatLng({{ library.lat }}, {{ library.lng }}), map, "<h3><a href='{{ library.url }}'>{{ library.location }}</a></h3><br />{{ library.address }}<br>{{ library.phone }}<br>{{ library.hours|safe }}" ); 
+                {% endfor %}
+
+                {% for station in fstats %}
+                fplacemarker(new google.maps.LatLng({{ station.lat }}, {{ station.lng }}), map, "{{ station.address }}" ); 
+                {% endfor %}
+
+                {% for station in pstats %}
+                pplacemarker(new google.maps.LatLng({{ station.lat }}, {{ station.lng }}), map, "<h3><a href='{{ station.url }}'>{{ station.address }}</a></h3>{{ station.phone }}" ); 
+                {% endfor %}
+            }
+
+            function lplacemarker(location, map, address) {
+                    marker = new google.maps.Marker({ position: location, map: map, icon: limage }); 
+                    google.maps.event.addListener(marker, 'click', function() { 
+                        if(infowindow){ infowindow.close(); }
+                        infowindow = new google.maps.InfoWindow({ content: address, size: new google.maps.Size(50,50) }); 
+                        infowindow.open(map, this); 
+                    });
+            }
+
+            function fplacemarker(location, map, address) {
+                    marker = new google.maps.Marker({ position: location, map: map, icon: fimage }); 
+                    google.maps.event.addListener(marker, 'click', function() { 
+                        if(infowindow){ infowindow.close(); }
+                        infowindow = new google.maps.InfoWindow({ content: address, size: new google.maps.Size(50,50) }); 
+                        infowindow.open(map, this); 
+                    });
+            }
+
+            function pplacemarker(location, map, address) {
+                    marker = new google.maps.Marker({ position: location, map: map, icon: pimage }); 
+                    google.maps.event.addListener(marker, 'click', function() { 
+                        if(infowindow){ infowindow.close(); }
+                        infowindow = new google.maps.InfoWindow({ content: address, size: new google.maps.Size(50,50) }); 
+                        infowindow.open(map, this); 
+                    });
+            }
+        </script>
+        {% endblock %}
+
+        {% block footer %}
+        <p>Created by <a href="http://duanehilton.com">Duane Hilton</a> | <a href="/">Home</a></p>
+        {% endblock %}
